@@ -8,7 +8,12 @@ type Query {
     hello: Hello!
 }
 
+type Mutation {
+    logAString(str: String!): String!
+}
+
 
 schema {
     query: Query
+    mutation: Mutation
 }
