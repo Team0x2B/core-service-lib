@@ -1,4 +1,4 @@
-package org.x2b.studi.core;
+package org.x2b.study.core;
 
 public class Hello {
     private String value;

@@ -1,6 +1,5 @@
-package org.x2b.studi.core;
+package org.x2b.study.core;
 
-import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import com.coxautodev.graphql.tools.GraphQLResolver;
 
 public class HelloResolver implements GraphQLResolver<Hello> {
