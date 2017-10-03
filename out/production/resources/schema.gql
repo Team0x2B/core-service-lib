@@ -1,0 +1,14 @@
+
+
+type Hello {
+    value: String!
+}
+
+type Query {
+    hello: Hello!
+}
+
+
+schema {
+    query: Query
+}
