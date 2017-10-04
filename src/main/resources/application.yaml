@@ -1,6 +1,9 @@
 server:
   port: 5000
 
+logging:
+  file: server_log.log
+
 graphql:
   servlet:
     mapping: /graphql
