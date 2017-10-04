@@ -1,11 +1,9 @@
-
-
 type Hello {
     value: String!
 }
 
 type Query {
-    hello: Hello!
+    hello(foo: String): Hello!
 }
 
 type Mutation {
