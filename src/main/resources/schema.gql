@@ -1,5 +1,6 @@
 type Hello {
     value: String!
+    getComplexThing(bar: String!): String!
 }
 
 type Query {

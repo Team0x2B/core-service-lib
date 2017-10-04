@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.x2b.study.core.graphql.resolvers.MutationResolver;
 import org.x2b.study.core.graphql.resolvers.QueryResolver;
+import org.x2b.study.core.graphql.resolvers.hello.GetComplexThingResolver;
 
 @SpringBootApplication
 public abstract class BootApplication {
@@ -21,9 +22,14 @@ public abstract class BootApplication {
     GraphQLSchema schema() {
         return SchemaParser.newParser()
                 .file("schema.gql")
-                .resolvers(new GraphQLResolver[]{new QueryResolver(), new MutationResolver()})
+                .resolvers(getAllResolvers())
                 .build()
                 .makeExecutableSchema();
+    }
+
+    public GraphQLResolver<?>[] getAllResolvers() {
+        return new GraphQLResolver[] {new QueryResolver(), new MutationResolver(),
+                new GetComplexThingResolver()};
     }
 
 }
