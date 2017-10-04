@@ -8,12 +8,14 @@ the core service library used to start writing a new backend service.
 GraphQL schemas should ALWAYS be defined in their own file named ```schema.gql``` placed in the root of the main 
 resources directory. NEVER define ANY part of a schema in Java.
 
-Resolvers should be rooted in a ```resolvers``` while types should be placed in a ```types``` package as per the GraphQL
-conventions. A type and its resolver should be placed in the same relative package.  
+NEVER create a field that will be accessed through GraphQL that does not have a public getter. Any time this happens,
+it will have to be fixed to allow for authorization later.
 
+ALWAYS put functionality in a business logic layer. Anything named ```*Resolver``` or ```*Fetcher``` should not have logic
+pertaining to the object being fetched. The one (psuedo) exception to this rule is authorization for objects in the ```types```
+package (where individual field access may be restricted using ```RequiresPermission``` annotations.
 
-For example:
-The type FooBar with qualified name:  
-```org.x2b.study.core.types.foo.bar.FooBar```  
-Should have the following resolver:  
-```org.x2b.study.core.resolvers.foo.bar.FooBarResolver```
+# General API Conventions
+
+Expensive to retrieve values should be handled properly. If the user doesn't request value, don't fetch it. Currently,
+my plan is to use ```Proxy``` and ```CompletableFuture``` to ensure this can happen in the business logic and not the resolver.

@@ -1,4 +1,4 @@
-package org.x2b.study.core.resolvers;
+package org.x2b.study.core.graphql.resolvers;
 
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 
