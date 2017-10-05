@@ -1,2 +1,4 @@
-rootProject.name = 'core-service-lib'
+rootProject.name = 'core-service'
+include 'core-service-lib'
+include 'core-service-lib-integration'
 
