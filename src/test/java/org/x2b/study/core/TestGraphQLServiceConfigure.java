@@ -1,20 +1,28 @@
 package org.x2b.study.core;
 
-import graphql.GraphQL;
-import graphql.schema.DataFetcher;
-import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.GraphQLType;
 import graphql.schema.idl.RuntimeWiring;
 import org.junit.Assert;
 import org.junit.Test;
-import org.x2b.study.core.graphql.Hello;
 
 import java.util.List;
 
 public class TestGraphQLServiceConfigure {
 
+
+
     private class TestConfigure extends GraphQLServiceConfigure {
+        public class Hello {
+
+            public Hello() {
+
+            }
+
+            public String getValue() {
+                return "this class is for testing schema creation but does not contain tests";
+            }
+        }
 
         @Override
         protected RuntimeWiring createRuntimeWiring() {
