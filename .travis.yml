@@ -1,4 +1,7 @@
 language: java
 
+script:
+  - gradle clean build
+
 before_install:
  - chmod +x gradlew
