@@ -5,3 +5,8 @@ jdk:
 before_install:
  - chmod +x gradlew
  - chmod +x gradle/wrapper/gradle-wrapper.jar
+
+notifications:
+  email:
+    on_success: never
+    on_failure: always
