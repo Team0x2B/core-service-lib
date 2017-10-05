@@ -1,0 +1,17 @@
+type Hello {
+    value: String!
+}
+
+type QueryRoot {
+    getHello: Hello!
+}
+
+type MutationRoot {
+    logAString(str: String!): String!
+}
+
+
+schema {
+    query: QueryRoot
+    mutation: MutationRoot
+}
