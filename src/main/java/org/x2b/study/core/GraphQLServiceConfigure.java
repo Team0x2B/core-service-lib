@@ -17,10 +17,6 @@ import java.io.File;
 @SpringBootApplication
 public abstract class GraphQLServiceConfigure {
 
-    public static void main(String[] args) {
-        SpringApplication.run(GraphQLServiceConfigure.class);
-    }
-
     @Value("#{graphql.schema.schemaFileLocation}")
     public static String schemaFileLocation = "schema.gql";
 

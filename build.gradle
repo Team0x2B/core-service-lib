@@ -27,6 +27,7 @@ targetCompatibility = 1.8
 repositories {
     mavenCentral()
 }
+bootRepackage.enabled = false
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
