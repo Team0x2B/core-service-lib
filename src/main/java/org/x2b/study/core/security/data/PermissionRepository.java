@@ -1,10 +1,12 @@
 package org.x2b.study.core.security.data;
 
+import org.springframework.stereotype.Repository;
 import org.x2b.study.core.security.User;
 
 import java.util.Map;
 import java.util.Set;
 
+@Repository
 public interface PermissionRepository {
 
     /**

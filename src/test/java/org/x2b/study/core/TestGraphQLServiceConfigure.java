@@ -1,0 +1,52 @@
+package org.x2b.study.core;
+
+import graphql.GraphQL;
+import graphql.schema.DataFetcher;
+import graphql.schema.DataFetchingEnvironment;
+import graphql.schema.GraphQLSchema;
+import graphql.schema.GraphQLType;
+import graphql.schema.idl.RuntimeWiring;
+import org.junit.Assert;
+import org.junit.Test;
+import org.x2b.study.core.graphql.Hello;
+
+import java.util.List;
+
+public class TestGraphQLServiceConfigure {
+
+    private class TestConfigure extends GraphQLServiceConfigure {
+
+        @Override
+        protected RuntimeWiring createRuntimeWiring() {
+            return RuntimeWiring.newRuntimeWiring()
+                    .type("QueryRoot", w -> w
+                        .dataFetcher("getHello", environment -> {
+                            return new Hello();
+                        })
+                    )
+                    .type("MutationRoot", w -> w
+                        .dataFetcher("logAString", env -> "mutation")
+                    )
+                    .build();
+        }
+    }
+
+
+    @Test
+    public void testCreateSchema() {
+        TestConfigure configure = new TestConfigure();
+        GraphQLSchema schema = configure.schema();
+        Assert.assertNotNull(schema);
+
+        GraphQLType queryRoot = schema.getQueryType();
+        Assert.assertNotNull(queryRoot);
+        Assert.assertEquals("QueryRoot", queryRoot.getName());
+
+        GraphQLType mutRoot = schema.getMutationType();
+        Assert.assertNotNull(mutRoot);
+        Assert.assertEquals("MutationRoot", mutRoot.getName());
+
+        List<GraphQLType> types = schema.getAllTypesAsList();
+        Assert.assertEquals(types.toString(), 3 + 10, types.size()); //10 built in
+    }
+}

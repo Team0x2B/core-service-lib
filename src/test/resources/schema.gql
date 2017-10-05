@@ -1,22 +1,17 @@
 type Hello {
     value: String!
-    getComplexThing(bar: String!): String!
 }
 
-input HelloInput {
-    foo: String!
+type QueryRoot {
+    getHello: Hello!
 }
 
-type Query {
-    hello(input: HelloInput!): Hello!
-}
-
-type Mutation {
+type MutationRoot {
     logAString(str: String!): String!
 }
 
 
 schema {
-    query: Query
-    mutation: Mutation
+    query: QueryRoot
+    mutation: MutationRoot
 }
