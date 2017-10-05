@@ -14,7 +14,7 @@ buildscript {
 
 tasks {
     task wrapper(type: Wrapper) {
-        gradleVersion = '4.2'
+        gradleVersion = '3.5'
     }
 }
 
