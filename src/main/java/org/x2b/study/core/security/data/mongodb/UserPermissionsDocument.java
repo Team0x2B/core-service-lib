@@ -1,4 +1,4 @@
-package org.x2b.study.core.security.data;
+package org.x2b.study.core.security.data.mongodb;
 
 import java.util.HashSet;
 import java.util.Set;
