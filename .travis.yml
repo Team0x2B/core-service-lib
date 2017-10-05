@@ -4,4 +4,4 @@ jdk:
   - oraclejdk8
 before_install:
  - chmod +x gradlew
- - chmod gradle/wrapper/gradle-wrapper.jar
+ - chmod +x gradle/wrapper/gradle-wrapper.jar
