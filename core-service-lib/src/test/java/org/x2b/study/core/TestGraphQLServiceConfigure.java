@@ -53,7 +53,5 @@ public class TestGraphQLServiceConfigure {
 
         List<GraphQLType> types = schema.getAllTypesAsList();
         Assert.assertEquals(types.toString(), 3 + 10, types.size()); //10 built in
-
-        Assert.fail();
     }
 }
