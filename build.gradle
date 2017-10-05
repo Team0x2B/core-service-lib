@@ -11,6 +11,12 @@ buildscript {
     }
 }
 
+tasks {
+    task wrapper(type: Wrapper) {
+        gradleVersion: 4.2
+    }
+}
+
 apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
 
