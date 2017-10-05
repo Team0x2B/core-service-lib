@@ -5,6 +5,7 @@ buildscript {
     repositories {
         maven { url "https://plugins.gradle.org/m2/" }
         maven { url 'http://repo.spring.io/plugins-release' }
+        maven {url 'https://repo.spring.io/libs-release'}
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.7.RELEASE")
@@ -38,5 +39,5 @@ dependencies {
 
     compile 'com.graphql-java:graphiql-spring-boot-starter:3.9.2'
 
-    compile 'com.graphql-java:graphql-java-tools:4.1.2'
+    compile 'org.springframework.data:spring-data-mongodb:2.0.0.RELEASE'
 }
