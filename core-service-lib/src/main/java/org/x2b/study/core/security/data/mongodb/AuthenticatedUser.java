@@ -10,12 +10,12 @@ import java.util.UUID;
 public class AuthenticatedUser implements User{
 
     @Id
-    private final UUID uuid;
+    private final UUID id;
 
     private final Set<String> permissions;
 
     public AuthenticatedUser(UUID uuid, Set<String> permissions) {
-        this.uuid = uuid;
+        this.id = uuid;
         this.permissions = new HashSet<>(permissions);
     }
 
@@ -25,11 +25,11 @@ public class AuthenticatedUser implements User{
 
     @Override
     public UUID getUUID() {
-        return uuid;
+        return id;
     }
 
     @Override
     public String toString() {
-        return String.format("User: %s", uuid);
+        return String.format("User: %s", id);
     }
 }

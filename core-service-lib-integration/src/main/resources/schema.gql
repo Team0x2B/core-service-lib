@@ -1,0 +1,12 @@
+type MutationRoot {
+    createEmptyUser: ID!
+}
+
+type QueryRoot {
+    getAStr: String!
+}
+
+schema {
+    mutation: MutationRoot
+    query: QueryRoot
+}

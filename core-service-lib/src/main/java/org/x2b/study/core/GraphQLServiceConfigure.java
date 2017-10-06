@@ -4,6 +4,7 @@ package org.x2b.study.core;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.SchemaGenerator;
+import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,7 +12,6 @@ import org.springframework.context.annotation.Bean;
 
 import java.io.File;
 
-@SpringBootApplication
 public abstract class GraphQLServiceConfigure {
 
     @Value("#{graphql.schema.schemaFileLocation}")
@@ -20,10 +20,14 @@ public abstract class GraphQLServiceConfigure {
 
     @Bean
     public GraphQLSchema schema() {
-        graphql.schema.idl.SchemaParser parser = new graphql.schema.idl.SchemaParser();
+        SchemaParser parser = new SchemaParser();
         SchemaGenerator schemaGenerator = new SchemaGenerator();
         TypeDefinitionRegistry tdr = parser.parse(getSchemaFile());
-        return schemaGenerator.makeExecutableSchema(tdr, createRuntimeWiring());
+        RuntimeWiring runtimeWiring = createRuntimeWiring();
+        if (runtimeWiring == null) {
+            return null;
+        }
+        return schemaGenerator.makeExecutableSchema(tdr, runtimeWiring);
     }
 
     private File getSchemaFile() {
@@ -31,5 +35,7 @@ public abstract class GraphQLServiceConfigure {
     }
 
 
-    protected abstract RuntimeWiring createRuntimeWiring();
+    protected RuntimeWiring createRuntimeWiring() {
+        return null;
+    }
 }
