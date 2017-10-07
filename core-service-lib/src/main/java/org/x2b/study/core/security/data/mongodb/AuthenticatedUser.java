@@ -14,13 +14,17 @@ public class AuthenticatedUser implements User{
 
     private final Set<String> permissions;
 
-    public AuthenticatedUser(UUID uuid, Set<String> permissions) {
-        this.id = uuid;
+    public AuthenticatedUser(UUID id, Set<String> permissions) {
+        this.id = id;
         this.permissions = new HashSet<>(permissions);
     }
 
     public boolean hasPermission(String permission) {
         return permission.contains(permission);
+    }
+
+    public Set<String> getPermissions() {
+        return permissions;
     }
 
     @Override

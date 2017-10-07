@@ -2,9 +2,12 @@ package org.x2b.study.core;
 
 import graphql.schema.StaticDataFetcher;
 import graphql.schema.idl.RuntimeWiring;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.x2b.study.core.graphql.fetchers.CreateEmptyUserFetcher;
+import org.x2b.study.core.graphql.fetchers.mutation.createuser.CreateUserFetcher;
+import org.x2b.study.core.graphql.fetchers.query.getuser.GetUserFetcher;
+import org.x2b.study.core.security.data.mongodb.AuthorizationRepository;
 
 @SpringBootApplication
 public class IntegrationTestService extends GraphQLServiceConfigure {
@@ -14,15 +17,16 @@ public class IntegrationTestService extends GraphQLServiceConfigure {
         SpringApplication.run(IntegrationTestService.class, args);
     }
 
-
+    @Autowired
+    public AuthorizationRepository authRepo;
 
     protected RuntimeWiring createRuntimeWiring() {
         return RuntimeWiring.newRuntimeWiring()
                 .type("MutationRoot", w -> w
-                    .dataFetcher("createEmptyUser", new CreateEmptyUserFetcher())
+                    .dataFetcher("createUser", new CreateUserFetcher(authRepo))
                 )
                 .type("QueryRoot", w -> w
-                    .dataFetcher("getAStr", new StaticDataFetcher("foo"))
+                    .dataFetcher("getUserPermissions", new GetUserFetcher(authRepo))
                 )
                 .build();
     }

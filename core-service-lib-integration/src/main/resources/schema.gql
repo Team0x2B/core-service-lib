@@ -1,9 +1,13 @@
 type MutationRoot {
-    createEmptyUser: ID!
+    createUser(input: PermissionsInput!): ID!
+}
+
+input PermissionsInput {
+    permissions: [String!]!
 }
 
 type QueryRoot {
-    getAStr: String!
+    getUserPermissions(id: ID!): [String]!
 }
 
 schema {
