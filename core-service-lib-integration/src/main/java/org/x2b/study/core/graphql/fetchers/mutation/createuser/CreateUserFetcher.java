@@ -2,11 +2,13 @@ package org.x2b.study.core.graphql.fetchers.mutation.createuser;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.x2b.study.core.security.data.mongodb.AuthenticatedUser;
 import org.x2b.study.core.security.data.mongodb.AuthorizationRepository;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.UUID;
 
 public class CreateUserFetcher implements DataFetcher<String> {
 
