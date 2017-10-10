@@ -19,4 +19,6 @@ dependencies {
     compile 'com.graphql-java:graphiql-spring-boot-starter:3.9.2'
 
     compile 'org.springframework.data:spring-data-mongodb:2.0.0.RELEASE'
+
+    compile 'org.apache.shiro:shiro-all:1.2.3'
 }

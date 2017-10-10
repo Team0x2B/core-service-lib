@@ -6,6 +6,7 @@ import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.SchemaGenerator;
 import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
+import org.apache.shiro.mgt.DefaultSecurityManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 
@@ -27,6 +28,11 @@ public abstract class GraphQLServiceConfigure {
             return null;
         }
         return schemaGenerator.makeExecutableSchema(tdr, runtimeWiring);
+    }
+
+    @Bean
+    public DefaultSecurityManager securityManager() {
+        return new DefaultSecurityManager();
     }
 
     private File getSchemaFile() {
