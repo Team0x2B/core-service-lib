@@ -8,12 +8,13 @@ import org.apache.shiro.realm.Realm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.x2b.study.core.security.data.mongodb.AuthenticatedUser;
 import org.x2b.study.core.security.data.mongodb.AuthorizationRepository;
 
 import java.util.UUID;
 
-
+@Component
 public class GenericAuthenticatingRealm implements Realm {
 
     @Autowired
