@@ -20,6 +20,10 @@ public class GenericAuthenticatingRealm implements Realm {
     @Autowired
     private AuthorizationRepository repository;
 
+    public GenericAuthenticatingRealm() {
+
+    }
+
     @Override
     public String getName() {
         return "AuthenticatingRealm";
