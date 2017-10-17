@@ -9,8 +9,11 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.x2b.study.core.ServiceConstants;
+import org.x2b.study.core.security.User;
 import org.x2b.study.core.security.data.mongodb.AuthenticatedUser;
 import org.x2b.study.core.security.data.mongodb.AuthorizationRepository;
+import org.x2b.study.core.security.jwt.JWTUserRepository;
 
 import java.util.UUID;
 
@@ -20,13 +23,17 @@ public class GenericAuthenticatingRealm implements Realm {
     @Autowired
     private AuthorizationRepository repository;
 
-    public GenericAuthenticatingRealm() {
+    private final JWTUserRepository jwtUserRepository;
 
+    public GenericAuthenticatingRealm() {
+        this.jwtUserRepository = new JWTUserRepository(); //TODO: this is akward for what amounts to one method
+        //TODO: maybe have the JWT token decode itself so that it can actually expose and principle and
+        //TODO: a credential
     }
 
     @Override
     public String getName() {
-        return "AuthenticatingRealm";
+        return ServiceConstants.SECURITY_AUTHENTICATION_REALM_NAME;
     }
 
     @Override
@@ -38,8 +45,8 @@ public class GenericAuthenticatingRealm implements Realm {
     public AuthenticationInfo getAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         JWTAuthenticationToken jwtToken = (JWTAuthenticationToken) authenticationToken;
 
-        UUID uuid = decodeUserId(jwtToken);
-        AuthenticatedUser user = repository.findOne(uuid); //TODO: handle missing case
+        User claimedUser = jwtUserRepository.getUser(jwtToken);
+        AuthenticatedUser user = repository.findOne(claimedUser.getUUID()); //TODO: handle missing case
 
         SimpleAccount account = new SimpleAccount();
         account.setCredentials(jwtToken.getCredentials());

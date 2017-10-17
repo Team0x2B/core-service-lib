@@ -17,6 +17,10 @@ public class JWTAuthenticationToken implements AuthenticationToken{
 
     @Override
     public Object getCredentials() {
+        return null;
+    }
+
+    public String getToken() {
         return data;
     }
 

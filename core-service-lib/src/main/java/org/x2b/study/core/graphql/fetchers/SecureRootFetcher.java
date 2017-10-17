@@ -7,6 +7,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.subject.Subject;
+import org.x2b.study.core.ServiceConstants;
 import org.x2b.study.core.graphql.util.GraphQLUtils;
 import org.x2b.study.core.security.shiro.JWTAuthenticationToken;
 
@@ -34,7 +35,7 @@ public abstract class SecureRootFetcher<T> implements DataFetcher<T> {
 
 
     private String getAuthTokenFromContext(DataFetchingEnvironment environment) {
-        return GraphQLUtils.getHeader("authorization", environment); //TODO: make this
+        return GraphQLUtils.getHeader(ServiceConstants.HTTP_AUTH_HEADER, environment); //TODO: make this
     }
 
     public abstract void handleAuthenticationFailure(AuthenticationException e, DataFetchingEnvironment environment);
