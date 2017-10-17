@@ -34,10 +34,11 @@ public class JWTUserRepository {
 
     public User getUser(JWTAuthenticationToken token) {
         //TODO: Eventually this should use getSubject to get a JSON and then deserialize into java
-        DecodedJWT decodedJWT = verifier.verify(token.getToken());
-        Claim uuidClaim = decodedJWT.getClaim(ServiceConstants.SECURITY_UUID_CLAIM);
-        String uuidString = uuidClaim.asString();
-        UUID uuid = UUID.fromString(uuidString);
-        return () -> uuid; //TODO: this is not a good place for a lambda
+//        DecodedJWT decodedJWT = verifier.verify(token.getToken());
+//        Claim uuidClaim = decodedJWT.getClaim(ServiceConstants.SECURITY_UUID_CLAIM);
+//        String uuidString = uuidClaim.asString();
+//        UUID uuid = UUID.fromString(uuidString);
+
+        return () -> UUID.fromString(token.getToken()); //TODO: this is not a good place for a lambda
     }
 }

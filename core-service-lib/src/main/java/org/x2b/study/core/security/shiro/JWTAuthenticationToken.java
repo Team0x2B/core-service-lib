@@ -4,7 +4,7 @@ import org.apache.shiro.authc.AuthenticationToken;
 
 public class JWTAuthenticationToken implements AuthenticationToken{
 
-    private final String data; //TODO: eventually we need to extract the user info from this token
+    private final String data;
 
     public JWTAuthenticationToken(String data) {
         this.data = data;
@@ -12,12 +12,12 @@ public class JWTAuthenticationToken implements AuthenticationToken{
 
     @Override
     public Object getPrincipal() {
-        return null;
+        return data;
     }
 
     @Override
     public Object getCredentials() {
-        return null;
+        return data;
     }
 
     public String getToken() {

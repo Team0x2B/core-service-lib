@@ -4,6 +4,7 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAccount;
+import org.apache.shiro.authc.pam.ModularRealmAuthenticator;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.SimplePrincipalCollection;
@@ -46,18 +47,18 @@ public class GenericAuthenticatingRealm implements Realm {
         JWTAuthenticationToken jwtToken = (JWTAuthenticationToken) authenticationToken;
 
         User claimedUser = jwtUserRepository.getUser(jwtToken);
-        AuthenticatedUser user = repository.findOne(claimedUser.getUUID()); //TODO: handle missing case
+        //AuthenticatedUser user = repository.findOne(claimedUser.getUUID()); //TODO: handle missing case
 
-        SimpleAccount account = new SimpleAccount();
-        account.setCredentials(jwtToken.getCredentials());
-        account.setStringPermissions(user.getPermissions());
-        account.setPrincipals(createPrincipalCollection(user));
+        SimpleAccount account = new SimpleAccount(jwtToken.getPrincipal(), jwtToken.getCredentials(), getName());
+        //account.setCredentials(jwtToken.getCredentials());
+        //account.setStringPermissions(user.getPermissions());
+        //account.setPrincipals(createPrincipalCollection(claimedUser));
 
         return account;
     }
 
 
-    private PrincipalCollection createPrincipalCollection(AuthenticatedUser user) {
+    private PrincipalCollection createPrincipalCollection(User user) {
         SimplePrincipalCollection collection = new SimplePrincipalCollection();
         collection.add(user.getUUID(), getName());
         return collection;

@@ -8,6 +8,7 @@ input PermissionsInput {
 
 type QueryRoot {
     getUserPermissions(id: ID!): [String]!
+    secureGet: String!
 }
 
 schema {

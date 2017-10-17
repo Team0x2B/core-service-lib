@@ -6,6 +6,8 @@ import org.apache.catalina.security.SecurityUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.mgt.RealmSecurityManager;
+import org.apache.shiro.realm.Realm;
 import org.apache.shiro.subject.Subject;
 import org.x2b.study.core.ServiceConstants;
 import org.x2b.study.core.graphql.util.GraphQLUtils;
@@ -21,6 +23,8 @@ import java.util.Map;
 public abstract class SecureRootFetcher<T> implements DataFetcher<T> {
     @Override
     public T get(DataFetchingEnvironment environment) {
+        for (Realm realm : ((RealmSecurityManager) SecurityUtils.getSecurityManager()).getRealms())
+            System.out.println(realm.getName());
         Subject currentUser = SecurityUtils.getSubject();
         if (!currentUser.isAuthenticated()) {
             AuthenticationToken token = new JWTAuthenticationToken(getAuthTokenFromContext(environment));
