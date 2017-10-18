@@ -9,20 +9,22 @@ import org.apache.shiro.realm.Realm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.x2b.study.core.ServiceConstants;
 import org.x2b.study.core.security.User;
 import org.x2b.study.core.security.data.mongodb.AuthenticatedUser;
 import org.x2b.study.core.security.data.mongodb.AuthorizationRepository;
 import org.x2b.study.core.security.jwt.JWTUserRepository;
-
 import java.util.UUID;
 
 @Component
 public class GenericAuthenticatingRealm implements Realm {
 
     @Autowired
-    private AuthorizationRepository repository;
+    public AuthorizationRepository repository;
 
     private final JWTUserRepository jwtUserRepository;
 
@@ -47,12 +49,12 @@ public class GenericAuthenticatingRealm implements Realm {
         JWTAuthenticationToken jwtToken = (JWTAuthenticationToken) authenticationToken;
 
         User claimedUser = jwtUserRepository.getUser(jwtToken);
-        //AuthenticatedUser user = repository.findOne(claimedUser.getUUID()); //TODO: handle missing case
+        AuthenticatedUser user = repository.findOne(claimedUser.getUUID()); //TODO: handle missing case
 
         SimpleAccount account = new SimpleAccount(jwtToken.getPrincipal(), jwtToken.getCredentials(), getName());
-        //account.setCredentials(jwtToken.getCredentials());
-        //account.setStringPermissions(user.getPermissions());
-        //account.setPrincipals(createPrincipalCollection(claimedUser));
+        account.setCredentials(jwtToken.getCredentials());
+        account.setStringPermissions(user.getPermissions());
+        account.setPrincipals(createPrincipalCollection(claimedUser));
 
         return account;
     }
