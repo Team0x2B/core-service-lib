@@ -5,6 +5,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.subject.Subject;
 import org.x2b.study.core.graphql.fetchers.SecureRootFetcher;
 
 public class SecureTestFetcher extends SecureRootFetcher {
@@ -17,6 +18,8 @@ public class SecureTestFetcher extends SecureRootFetcher {
 
     @Override
     public Object secureGet(DataFetchingEnvironment environment) {
-        return SecurityUtils.getSubject().getPrincipal();
+        Subject s = SecurityUtils.getSubject();
+
+        return s.isPermitted("foo:bar:read");
     }
 }

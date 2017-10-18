@@ -21,7 +21,7 @@ public class IntegrationTestService extends GraphQLServiceConfigure {
 
     public static void main(String[] args) {
         ConfigurableApplicationContext ctx = SpringApplication.run(IntegrationTestService.class, args);
-        System.out.println(ctx.getBean("GenericAuthenticatingRealm"));
+        System.out.println(ctx.getBean("authenticatingRealm"));
     }
 
     @Autowired

@@ -11,6 +11,7 @@ import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.filter.DelegatingFilterProxy;
@@ -37,9 +38,14 @@ public abstract class GraphQLServiceConfigure {
     }
 
     @Bean
+    public GenericAuthenticatingRealm authenticatingRealm() {
+        return new GenericAuthenticatingRealm();
+    }
+
+    @Bean
     public DefaultWebSecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        securityManager.setRealm(new GenericAuthenticatingRealm());
+        securityManager.setRealm(authenticatingRealm());
         return securityManager;
     }
 
