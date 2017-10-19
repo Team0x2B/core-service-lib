@@ -1,7 +1,5 @@
 package org.x2b.study.core.security.data.mongodb;
 
-import org.apache.shiro.authc.AuthenticationInfo;
-import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.data.annotation.Id;
 import org.x2b.study.core.security.User;
 

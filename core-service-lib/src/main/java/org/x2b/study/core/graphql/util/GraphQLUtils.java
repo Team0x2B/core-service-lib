@@ -3,9 +3,6 @@ package org.x2b.study.core.graphql.util;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.servlet.GraphQLContext;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
-
 public final class GraphQLUtils {
 
     private GraphQLUtils() {}

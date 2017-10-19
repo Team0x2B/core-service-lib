@@ -6,14 +6,14 @@ import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.SchemaGenerator;
 import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
-import org.apache.shiro.mgt.DefaultSecurityManager;
+import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
+import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.filter.session.NoSessionCreationFilter;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.x2b.study.core.security.shiro.GenericAuthenticatingRealm;
 
@@ -46,6 +46,11 @@ public abstract class GraphQLServiceConfigure {
     public DefaultWebSecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(authenticatingRealm());
+        DefaultSessionStorageEvaluator sessionStorageEvaluator = new DefaultSessionStorageEvaluator();
+        sessionStorageEvaluator.setSessionStorageEnabled(false);
+        DefaultSubjectDAO subjectDAO = new DefaultSubjectDAO();
+        subjectDAO.setSessionStorageEvaluator(sessionStorageEvaluator);
+        securityManager.setSubjectDAO(subjectDAO);
         return securityManager;
     }
 
@@ -54,8 +59,18 @@ public abstract class GraphQLServiceConfigure {
         FilterRegistrationBean filterRegistration = new FilterRegistrationBean();
         DelegatingFilterProxy delegatingFilterProxy = new DelegatingFilterProxy();
         delegatingFilterProxy.setTargetBeanName("shiroFilter");
-        filterRegistration.setFilter(new DelegatingFilterProxy());
+        filterRegistration.setFilter(delegatingFilterProxy);
         filterRegistration.setName("shiroFilter");
+        filterRegistration.addInitParameter("targetFilterLifecycle", "true");
+        filterRegistration.addUrlPatterns("/*");
+        return filterRegistration;
+    }
+
+    @Bean
+    public FilterRegistrationBean shrioSessionFilterRegistration() {
+        FilterRegistrationBean filterRegistration = new FilterRegistrationBean();
+        filterRegistration.setFilter(new NoSessionCreationFilter());
+        filterRegistration.setName("shiroSessionFilter");
         filterRegistration.addInitParameter("targetFilterLifecycle", "true");
         filterRegistration.addUrlPatterns("/*");
         return filterRegistration;

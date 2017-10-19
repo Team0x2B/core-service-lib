@@ -3,16 +3,11 @@ package org.x2b.study.core.security.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.interfaces.Claim;
-import com.auth0.jwt.interfaces.DecodedJWT;
-import com.auth0.jwt.interfaces.RSAKeyProvider;
 import org.x2b.study.core.ServiceConstants;
 import org.x2b.study.core.security.User;
 import org.x2b.study.core.security.shiro.JWTAuthenticationToken;
-import sun.security.rsa.RSAPublicKeyImpl;
 
 import java.io.UnsupportedEncodingException;
-import java.security.interfaces.RSAPublicKey;
 import java.util.UUID;
 
 public class JWTUserRepository {

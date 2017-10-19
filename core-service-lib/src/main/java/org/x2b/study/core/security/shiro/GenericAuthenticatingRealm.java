@@ -3,26 +3,24 @@ package org.x2b.study.core.security.shiro;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.SimpleAccount;
-import org.apache.shiro.authc.pam.ModularRealmAuthenticator;
-import org.apache.shiro.authz.Authorizer;
-import org.apache.shiro.realm.Realm;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.x2b.study.core.ServiceConstants;
 import org.x2b.study.core.security.User;
 import org.x2b.study.core.security.data.mongodb.AuthenticatedUser;
 import org.x2b.study.core.security.data.mongodb.AuthorizationRepository;
 import org.x2b.study.core.security.jwt.JWTUserRepository;
+
 import java.util.UUID;
 
 @Component
-public class GenericAuthenticatingRealm implements Realm {
+public class GenericAuthenticatingRealm extends AuthorizingRealm {
 
     @Autowired
     public AuthorizationRepository repository;
@@ -46,18 +44,22 @@ public class GenericAuthenticatingRealm implements Realm {
     }
 
     @Override
-    public AuthenticationInfo getAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
+    public AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         JWTAuthenticationToken jwtToken = (JWTAuthenticationToken) authenticationToken;
 
         User claimedUser = jwtUserRepository.getUser(jwtToken);
-        AuthenticatedUser user = repository.findOne(claimedUser.getUUID()); //TODO: handle missing case
+        SimpleAuthenticationInfo authenticationInfo =
+                new SimpleAuthenticationInfo(claimedUser, authenticationToken.getCredentials(), getName());
+        return authenticationInfo;
+    }
 
-        SimpleAccount account = new SimpleAccount(jwtToken.getPrincipal(), jwtToken.getCredentials(), getName());
-        account.setCredentials(jwtToken.getCredentials());
-        account.setStringPermissions(user.getPermissions());
-        account.setPrincipals(createPrincipalCollection(claimedUser));
-
-        return account;
+    @Override
+    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
+        User user = (User) principalCollection.getPrimaryPrincipal();
+        AuthenticatedUser authorizedUser = repository.findOne(user.getUUID());
+        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+        info.setStringPermissions(authorizedUser.getPermissions());
+        return info;
     }
 
 

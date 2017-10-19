@@ -1,13 +1,10 @@
 package org.x2b.study.core;
 
 import graphql.schema.idl.RuntimeWiring;
-import org.apache.shiro.mgt.DefaultSecurityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.x2b.study.core.graphql.fetchers.mutation.createuser.CreateUserFetcher;
 import org.x2b.study.core.graphql.fetchers.mutation.getsecure.SecureTestFetcher;
