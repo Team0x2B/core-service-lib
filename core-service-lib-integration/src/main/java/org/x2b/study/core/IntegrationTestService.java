@@ -24,6 +24,7 @@ public class IntegrationTestService extends GraphQLServiceConfigure {
     @Autowired
     public AuthorizationRepository authRepo;
 
+    @Override
     protected RuntimeWiring createRuntimeWiring() {
         return RuntimeWiring.newRuntimeWiring()
                 .type("MutationRoot", w -> w

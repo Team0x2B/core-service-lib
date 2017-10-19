@@ -8,6 +8,7 @@ import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
+import org.apache.shiro.mgt.SubjectDAO;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.filter.session.NoSessionCreationFilter;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
@@ -46,12 +47,16 @@ public abstract class GraphQLServiceConfigure {
     public DefaultWebSecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(authenticatingRealm());
+        securityManager.setSubjectDAO(createStatelessSubjectDao());
+        return securityManager;
+    }
+
+    private SubjectDAO createStatelessSubjectDao() {
         DefaultSessionStorageEvaluator sessionStorageEvaluator = new DefaultSessionStorageEvaluator();
         sessionStorageEvaluator.setSessionStorageEnabled(false);
         DefaultSubjectDAO subjectDAO = new DefaultSubjectDAO();
         subjectDAO.setSessionStorageEvaluator(sessionStorageEvaluator);
-        securityManager.setSubjectDAO(subjectDAO);
-        return securityManager;
+        return subjectDAO;
     }
 
     @Bean
@@ -61,16 +66,6 @@ public abstract class GraphQLServiceConfigure {
         delegatingFilterProxy.setTargetBeanName("shiroFilter");
         filterRegistration.setFilter(delegatingFilterProxy);
         filterRegistration.setName("shiroFilter");
-        filterRegistration.addInitParameter("targetFilterLifecycle", "true");
-        filterRegistration.addUrlPatterns("/*");
-        return filterRegistration;
-    }
-
-    @Bean
-    public FilterRegistrationBean shrioSessionFilterRegistration() {
-        FilterRegistrationBean filterRegistration = new FilterRegistrationBean();
-        filterRegistration.setFilter(new NoSessionCreationFilter());
-        filterRegistration.setName("shiroSessionFilter");
         filterRegistration.addInitParameter("targetFilterLifecycle", "true");
         filterRegistration.addUrlPatterns("/*");
         return filterRegistration;
@@ -88,7 +83,5 @@ public abstract class GraphQLServiceConfigure {
     }
 
 
-    protected RuntimeWiring createRuntimeWiring() {
-        return null;
-    }
+    protected abstract RuntimeWiring createRuntimeWiring();
 }
