@@ -36,4 +36,17 @@ public class AuthenticatedUser implements User{
     public String toString() {
         return String.format("User: %s", id);
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other != null && other instanceof AuthenticatedUser) {
+            return ((AuthenticatedUser) other).id.equals(id);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
 }
