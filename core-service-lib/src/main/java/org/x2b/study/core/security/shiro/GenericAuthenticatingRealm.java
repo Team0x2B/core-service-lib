@@ -22,6 +22,7 @@ import java.util.UUID;
 @Component
 public class GenericAuthenticatingRealm extends AuthorizingRealm {
 
+
     @Autowired
     public AuthorizationRepository repository;
 
