@@ -29,6 +29,7 @@ public class GenericAuthenticatingRealm extends AuthorizingRealm {
     private final JWTUserRepository jwtUserRepository;
 
     public GenericAuthenticatingRealm() {
+        this.setCachingEnabled(false); //TODO: maybe just don't extend a caching realm
         this.jwtUserRepository = new JWTUserRepository(); //TODO: this is akward for what amounts to one method
         //TODO: maybe have the JWT token decode itself so that it can actually expose and principle and
         //TODO: a credential
@@ -61,17 +62,5 @@ public class GenericAuthenticatingRealm extends AuthorizingRealm {
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         info.setStringPermissions(authorizedUser.getPermissions());
         return info;
-    }
-
-
-    private PrincipalCollection createPrincipalCollection(User user) {
-        SimplePrincipalCollection collection = new SimplePrincipalCollection();
-        collection.add(user.getUUID(), getName());
-        return collection;
-    }
-
-
-    private UUID decodeUserId(JWTAuthenticationToken token) {
-        return null;
     }
 }
