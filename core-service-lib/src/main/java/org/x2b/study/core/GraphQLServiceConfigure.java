@@ -12,19 +12,28 @@ import org.apache.shiro.mgt.SubjectDAO;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.filter.session.NoSessionCreationFilter;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.filter.DelegatingFilterProxy;
+import org.x2b.study.core.security.jwt.JWTUserTokenVerifier;
+import org.x2b.study.core.security.jwt.KeyProviderBean;
 import org.x2b.study.core.security.shiro.GenericAuthenticatingRealm;
 
 import java.io.File;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 
 public abstract class GraphQLServiceConfigure {
 
     @Value("#{graphql.schema.schemaFileLocation}")
     public static String schemaFileLocation = "schema.gql";
+
+    @Autowired
+    protected ApplicationContext applicationContext;
 
 
     @Bean
@@ -77,6 +86,16 @@ public abstract class GraphQLServiceConfigure {
         ShiroFilterFactoryBean shiroFilterFactory = new ShiroFilterFactoryBean();
         shiroFilterFactory.setSecurityManager(securityManager());
         return shiroFilterFactory;
+    }
+
+    @Bean
+    public KeyProviderBean jwtAuthKeyProvider() {
+        return new KeyProviderBean();
+    }
+
+    @Bean
+    public JWTUserTokenVerifier jwtUserTokenVerifier() {
+        return new JWTUserTokenVerifier((KeyProviderBean) applicationContext.getBean("jwtAuthKeyProvider"));
     }
 
     private File getSchemaFile() {

@@ -3,25 +3,31 @@ package org.x2b.study.core.security.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.RSAKeyProvider;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.x2b.study.core.ServiceConstants;
 import org.x2b.study.core.security.User;
 import org.x2b.study.core.security.shiro.JWTAuthenticationToken;
+import sun.security.rsa.RSAPublicKeyImpl;
 
 import java.io.UnsupportedEncodingException;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 import java.util.UUID;
 
-public class JWTUserRepository {
+@Component
+public class JWTUserTokenVerifier {
 
     private final JWTVerifier verifier;
 
-    public JWTUserRepository() {
-        Algorithm algorithm = null;
-        try {
-            algorithm = Algorithm.HMAC256(ServiceConstants.DO_NOT_USE_THIS_IN_PRODUCTION);
-            //TODO: Use RSA here. DON'T USE THIS IN PRODUCTION
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace(); //TODO: This should crash at startup
-        }
+    @Autowired
+    public JWTUserTokenVerifier(KeyProviderBean rsaKeyProvider) {
+        RSAPublicKey publicKey = rsaKeyProvider.getPublicKey();
+        RSAPrivateKey privateKey = rsaKeyProvider.getPrivateKey();
+        Algorithm algorithm = Algorithm.RSA256(publicKey, privateKey);
         verifier = JWT.require(algorithm)
                 .withIssuer(ServiceConstants.SECURITY_TOKEN_ISSUER)
                 .build();

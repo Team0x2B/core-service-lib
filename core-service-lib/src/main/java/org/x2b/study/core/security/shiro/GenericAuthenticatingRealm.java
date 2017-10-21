@@ -8,16 +8,13 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.x2b.study.core.ServiceConstants;
 import org.x2b.study.core.security.User;
 import org.x2b.study.core.security.data.mongodb.AuthenticatedUser;
 import org.x2b.study.core.security.data.mongodb.AuthorizationRepository;
-import org.x2b.study.core.security.jwt.JWTUserRepository;
-
-import java.util.UUID;
+import org.x2b.study.core.security.jwt.JWTUserTokenVerifier;
 
 @Component
 public class GenericAuthenticatingRealm extends AuthorizingRealm {
@@ -26,13 +23,11 @@ public class GenericAuthenticatingRealm extends AuthorizingRealm {
     @Autowired
     public AuthorizationRepository repository;
 
-    private final JWTUserRepository jwtUserRepository;
+    @Autowired
+    private JWTUserTokenVerifier jwtUserTokenVerifier;
 
     public GenericAuthenticatingRealm() {
         this.setCachingEnabled(false); //TODO: maybe just don't extend a caching realm
-        this.jwtUserRepository = new JWTUserRepository(); //TODO: this is akward for what amounts to one method
-        //TODO: maybe have the JWT token decode itself so that it can actually expose and principle and
-        //TODO: a credential
     }
 
     @Override
@@ -49,7 +44,7 @@ public class GenericAuthenticatingRealm extends AuthorizingRealm {
     public AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         JWTAuthenticationToken jwtToken = (JWTAuthenticationToken) authenticationToken;
 
-        User claimedUser = jwtUserRepository.getUser(jwtToken);
+        User claimedUser = jwtUserTokenVerifier.getUser(jwtToken);
         SimpleAuthenticationInfo authenticationInfo =
                 new SimpleAuthenticationInfo(claimedUser, authenticationToken.getCredentials(), getName());
         return authenticationInfo;
