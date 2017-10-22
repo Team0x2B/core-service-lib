@@ -11,10 +11,10 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.x2b.studi.core.security.User;
-import org.x2b.studi.core.ServiceConstants;
 import org.x2b.studi.core.security.data.mongodb.AuthenticatedUser;
 import org.x2b.studi.core.security.data.mongodb.AuthorizationRepository;
 import org.x2b.studi.core.security.jwt.JWTUserTokenVerifier;
+import org.x2b.studi.core.ServiceConstants;
 
 @Component
 public class GenericAuthenticatingRealm extends AuthorizingRealm {
