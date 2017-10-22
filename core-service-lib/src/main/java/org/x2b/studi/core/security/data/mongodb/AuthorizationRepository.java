@@ -18,4 +18,8 @@ public interface AuthorizationRepository extends MongoRepository<AuthenticatedUs
     @Override
     @CacheEvict(AUTHORIZED_USER_CACHE)
     AuthenticatedUser save(AuthenticatedUser entity);
+
+    @Override
+    @CacheEvict(AUTHORIZED_USER_CACHE)
+    void delete(AuthenticatedUser entity);
 }
