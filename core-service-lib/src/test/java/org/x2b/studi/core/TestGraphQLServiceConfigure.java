@@ -5,6 +5,7 @@ import graphql.schema.GraphQLType;
 import graphql.schema.idl.RuntimeWiring;
 import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.data.mongodb.core.MongoClientFactoryBean;
 
 import java.util.List;
 
@@ -19,6 +20,14 @@ public class TestGraphQLServiceConfigure {
             public String getValue() {
                 return "this class is for testing schema creation but does not contain tests";
             }
+        }
+
+        @Override
+        protected MongoClientFactoryBean createAuthDatasourceFactory() {
+            MongoClientFactoryBean factoryBean = new MongoClientFactoryBean();
+            factoryBean.setHost("localhost");
+            factoryBean.setPort(27017);
+            return factoryBean;
         }
 
         @Override
