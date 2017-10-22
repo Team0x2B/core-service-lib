@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.mongodb.core.MongoClientFactoryBean;
 import org.x2b.studi.core.graphql.fetchers.mutation.createuser.CreateUserFetcher;
 import org.x2b.studi.core.graphql.fetchers.mutation.getsecure.SecureTestFetcher;
 import org.x2b.studi.core.graphql.fetchers.query.getuser.GetUserFetcher;
@@ -28,6 +29,14 @@ public class IntegrationTestService extends GraphQLServiceConfigure {
 
     @Autowired
     public AuthorizationRepository authRepo;
+
+    @Override
+    protected MongoClientFactoryBean createAuthDatasourceFactory() {
+        MongoClientFactoryBean factoryBean = new MongoClientFactoryBean();
+        factoryBean.setHost("localhost");
+        factoryBean.setPort(27017);
+        return factoryBean;
+    }
 
     @Override
     protected RuntimeWiring createRuntimeWiring() {

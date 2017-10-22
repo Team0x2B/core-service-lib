@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.mongodb.core.MongoClientFactoryBean;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.x2b.studi.core.security.jwt.JWTUserTokenVerifier;
 import org.x2b.studi.core.security.jwt.SharedSecretProvider;
@@ -94,6 +95,13 @@ public abstract class GraphQLServiceConfigure {
     public JWTUserTokenVerifier jwtUserTokenVerifier() {
         return new JWTUserTokenVerifier((SharedSecretProvider) applicationContext.getBean("jwtAuthKeyProvider"));
     }
+
+    @Bean
+    public MongoClientFactoryBean authorizationDatasource() {
+        return createAuthDatasourceFactory();
+    }
+
+    protected abstract MongoClientFactoryBean createAuthDatasourceFactory();
 
     private File getSchemaFile() {
         return new File(this.getClass().getClassLoader().getResource(schemaFileLocation).getFile());
