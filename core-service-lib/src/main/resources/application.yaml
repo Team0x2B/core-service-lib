@@ -14,3 +14,8 @@ graphiql:
   mapping: /graphiql
   endpoint: /graphql
   enabled: true
+
+studi:
+  security:
+    auth:
+      secret: helasecret
