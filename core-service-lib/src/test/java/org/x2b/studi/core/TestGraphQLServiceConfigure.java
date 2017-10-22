@@ -21,14 +21,7 @@ public class TestGraphQLServiceConfigure {
                 return "this class is for testing schema creation but does not contain tests";
             }
         }
-
-        @Override
-        protected MongoClientFactoryBean createAuthDatasourceFactory() {
-            MongoClientFactoryBean factoryBean = new MongoClientFactoryBean();
-            factoryBean.setHost("localhost");
-            factoryBean.setPort(27017);
-            return factoryBean;
-        }
+        
 
         @Override
         protected RuntimeWiring createRuntimeWiring() {

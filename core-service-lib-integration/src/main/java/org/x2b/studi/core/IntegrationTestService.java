@@ -28,15 +28,7 @@ public class IntegrationTestService extends GraphQLServiceConfigure {
     }
 
     @Autowired
-    public AuthorizationRepository authRepo;
-
-    @Override
-    protected MongoClientFactoryBean createAuthDatasourceFactory() {
-        MongoClientFactoryBean factoryBean = new MongoClientFactoryBean();
-        factoryBean.setHost("localhost");
-        factoryBean.setPort(27017);
-        return factoryBean;
-    }
+    private AuthorizationRepository authRepo;
 
     @Override
     protected RuntimeWiring createRuntimeWiring() {

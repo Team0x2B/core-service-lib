@@ -16,19 +16,20 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoClientFactoryBean;
 import org.springframework.web.filter.DelegatingFilterProxy;
+import org.x2b.studi.core.security.data.mongodb.MongoDbDetailsProvider;
 import org.x2b.studi.core.security.jwt.JWTUserTokenVerifier;
 import org.x2b.studi.core.security.jwt.SharedSecretProvider;
 import org.x2b.studi.core.security.shiro.GenericAuthenticatingRealm;
 
 import java.io.File;
 
+@Configuration
 public abstract class GraphQLServiceConfigure {
 
-    @Value("#{graphql.schema.schemaFileLocation}")
-    public static String schemaFileLocation = "schema.gql";
-
+    protected String schemaFileLocation = "schema.gql";
 
     @Autowired
     protected ApplicationContext applicationContext;
@@ -96,12 +97,22 @@ public abstract class GraphQLServiceConfigure {
         return new JWTUserTokenVerifier((SharedSecretProvider) applicationContext.getBean("jwtAuthKeyProvider"));
     }
 
+
     @Bean
-    public MongoClientFactoryBean authorizationDatasource() {
-        return createAuthDatasourceFactory();
+    public MongoDbDetailsProvider authDbDetailsProvider() {
+        return new MongoDbDetailsProvider();
     }
 
-    protected abstract MongoClientFactoryBean createAuthDatasourceFactory();
+    @Bean
+    public MongoClientFactoryBean authorizationDatasource() {
+        MongoClientFactoryBean factory = new MongoClientFactoryBean();
+        MongoDbDetailsProvider detailsProvider = authDbDetailsProvider();
+
+        factory.setHost(detailsProvider.getHost());
+        factory.setPort(detailsProvider.getPort());
+
+        return factory;
+    }
 
     private File getSchemaFile() {
         return new File(this.getClass().getClassLoader().getResource(schemaFileLocation).getFile());
