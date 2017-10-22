@@ -1,0 +1,16 @@
+type MutationRoot {
+    createUser(input: PermissionsInput!): ID!
+}
+
+input PermissionsInput {
+    permissions: [String!]!
+}
+
+type QueryRoot {
+    getUserPermissions(id: ID!): [String]!
+}
+
+schema {
+    mutation: MutationRoot
+    query: QueryRoot
+}

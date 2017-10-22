@@ -1,0 +1,18 @@
+group 'org.x2b.study.org.x2b.study.core'
+version '0.1-SNAPSHOT'
+
+apply plugin: 'java'
+
+apply plugin: 'org.springframework.boot'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+
+    compile project(':core-service-lib')
+}
